@@ -67,8 +67,8 @@ int b2 = 255;
 int r3 = 0;
 int g3 = 255;
 int b3 = 255;
-double frac1 = 1;
-double frac2 = 0;
+double frac1 = 0.5;
+double frac2 = 0.5;
 double frac3 = 0;
 
 
@@ -116,6 +116,7 @@ void setup() {
 
 void loop() {  
   
+  Serial.println("debug");
   //Serial.println("debug");
   //*************************Updating animation control variables from received command*************************************
   if (stringComplete) {
@@ -235,15 +236,15 @@ void loop() {
       else if(param == "T3") T3 = atol(value);
       else if(param == "T4") T4 = atol(value);
       else if(param == "T5") T5 = atol(value);
-      else if(param == "R1") r1 = atol(value);
-      else if(param == "G1") g1 = atol(value);
-      else if(param == "B1") b1 = atol(value);
-      else if(param == "R2") r2 = atol(value);
-      else if(param == "B2") b2 = atol(value);
-      else if(param == "G2") g2 = atol(value);
-      else if(param == "R3") r3 = atol(value);
-      else if(param == "G3") g3 = atol(value);
-      else if(param == "B3") b3 = atol(value);
+      else if(param == "r1") r1 = atol(value);
+      else if(param == "g1") g1 = atol(value);
+      else if(param == "b1") b1 = atol(value);
+      else if(param == "r2") r2 = atol(value);
+      else if(param == "b2") b2 = atol(value);
+      else if(param == "g2") g2 = atol(value);
+      else if(param == "r3") r3 = atol(value);
+      else if(param == "g3") g3 = atol(value);
+      else if(param == "b3") b3 = atol(value);
       else if(param == "frac1") frac1 = atof(value);
       else if(param == "frac2") frac2 = atof(value);
       else if(param == "frac3") frac3 = atof(value);
@@ -332,7 +333,7 @@ void loop() {
     Serial.println("Escorting...");  
     //progressBar3(total_time, remaining_time,500);
     //progressBar4(total_time, remaining_time,500);
-    progressBar1(total_time,remaining_time,strip.Color(0,0,150),strip.Color(0,255,0));
+    progressBar1(total_time,remaining_time,strip.Color(0,0,0),strip.Color(0,255,0));
   }
   else{
     
@@ -349,47 +350,6 @@ void loop() {
       triangular(D,T,rmin,gmin,bmin,rmax,gmax,bmax);
       break;
 
-    {case 3: 
-      int wv_vec[5] = {wv1,wv2,wv3,wv4,wv5};
-      double D_vec[5] = {D1,D2,D3,D4,D5};
-      int T_vec[5] = {T1,T2,T3,T4,T5};
-      for(int i = 0; i < nSub; i++)
-      {
-        if(wv_vec[i] == 2)
-          {square(D_vec[i],T_vec[i],rmin,gmin,bmin,rmax,gmax,bmax);}
-        else
-          {triangular(D_vec[i],T_vec[i],rmin,gmin,bmin,rmax,gmax,bmax);}    
-      }
-      break;}
-    
-    case 4:
-      for(int i=start_pixel;i<strip.numPixels();i=i+skip_step){
-        strip.setPixelColor(i,strip.Color(rmax,gmax,bmax)); 
-      }
-      strip.show();
-      break;
-      
-    {case 5:
-        double sum = frac1+frac2+frac3;
-        frac1 = 0.0 + frac1/sum;
-        frac2 = 0.0 + frac2/sum;
-        frac3 = 0.0 + frac3/sum;
-        double frac_vec[3] = {frac1,0.0 + frac2+frac1,1};
-        int R_vec[3] = {r1,r2,r3};
-        int G_vec[3] = {g1,g2,g3};
-        int B_vec[3] = {b1,b2,b3};
-        
-        int curs = start_pixel;
-        for(int i = 0; i<nSeg; i++)
-        {
-          for(int j=curs;j<start_pixel + (strip.numPixels()-start_pixel+1)*frac_vec[i];j=j+skip_step){
-            strip.setPixelColor(j,strip.Color(R_vec[i],G_vec[i],B_vec[i])); 
-            curs = j;
-          }
-        }
-        strip.show();
-        break;}
-    
     default: //
       for(int i=start_pixel;i<strip.numPixels();i=i+skip_step){
         strip.setPixelColor(i,strip.Color(0,100,100)); 

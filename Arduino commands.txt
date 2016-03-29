@@ -1,0 +1,33 @@
+The Arduino receives commands to start an animation on the light strip, defined by the parameters specified.
+
+Protocol:
+[param1]=[param1 value] [param2]=[param2 value] [param3]=[param3 value] ... \n
+
+will start a new animation with the parameters specified. If required parameters are not specified, the default values will be used.
+The order of parameters does not matter.
+
+List of parameters and values:
+	
+wv: wave shape
+	1: Square (requires D, T, R, G and B)
+	2: Triangular (requires D, T, R, G and B)
+	3: Modulated periodic (requires nSub (max is 5), wv1 ... wv[nSub], D1 ... D[nSub], T1 ... T[nSub], R, G and B) 	
+		nSub is the number of subperiods in one period and wv[i] is either 1 or 2.
+	4: Static color/intensity change (requires R,G and B)
+	5: Static color/intensity change in space (requires nSeg (max 3), R1, G1, B1 ... R[nSeg], G[nSeg], B[nSeg], frac1, ... frac[nSeg])
+		nSeg is the number of different color segments to be included, starting from lower part of strip. frac[i] is the fraction of the strip (0-1) occupied by segment i (frac[i]'s should sum to 1).
+		
+D: duty cycle (0-1)
+
+T: period (in ms)
+
+R,G,B: max color intensity values (0-255) for each channel
+
+Total list of parameters with type and default values:
+wv (int) (2), D (double) (0.5), T (int) (1000), R (int) (0), G (int) (255), B (int) (255), nSub (int) (2), wv1 (int) (1), wv2 (int) (1), wv3 (int) (1), wv4 (int) (1), wv5 (int) (1), D1 (double) (0.5), D2 (double) (0.5), D3 (double) (0.5), D4 (double) (0.5), D5 (double) (0.5), T1 (int) (500), T2 (int) (500), T3 (int) (500), T4 (int) (500), T5 (int) (500), nSeg (int) (2), R1 (int) (0), G1 (int) (255), B1 (int) (255), R2 (int) (0), G2 (int) (255), B2 (int) (255), R3 (int) (0), G3 (int) (255), B3 (int) (255), frac1 (double) (0.5), frac2 (double) (0.5), frac3 (double) (0).
+
+example: 
+(Make sure to add an endline at the end of the command)
+Regular Red Blinking with period 1s: wv=1 D=0.5 T=1000 R=255 G=0 B=0  
+
+Note: Failure to respect the syntax will result in turning all the pixels off and disabling the serial communication with the Arduino board.
