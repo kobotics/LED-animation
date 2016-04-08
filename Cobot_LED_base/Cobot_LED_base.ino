@@ -109,7 +109,7 @@ void setup() {
   
   for (int i =0; i<500; i++){
     delay(1);
-    Serial.print("lights");
+    Serial.print("ledbase");
   }
   
 }

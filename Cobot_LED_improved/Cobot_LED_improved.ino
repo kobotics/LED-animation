@@ -333,7 +333,7 @@ void loop() {
     Serial.println("Escorting...");  
     //progressBar3(total_time, remaining_time,500);
     //progressBar4(total_time, remaining_time,500);
-    progressBar1(total_time,remaining_time,strip.Color(0,0,0),strip.Color(0,255,0));
+    progressBar1(total_time,remaining_time,strip.Color(0,0,100),strip.Color(0,255,0));
   }
   else{
     
