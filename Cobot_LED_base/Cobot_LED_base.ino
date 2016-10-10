@@ -70,6 +70,8 @@ int b3 = 255;
 double frac1 = 0.5;
 double frac2 = 0.5;
 double frac3 = 0;
+String next_move = "straight";
+double vel = 0;
 
 
 //******Scenario specific**********************
@@ -175,7 +177,8 @@ void loop() {
     frac1 = 0.5;
     frac2 = 0.5;
     frac3 = 0;
-
+    next_move = "straight";
+    vel  = 0;
 
 
 
@@ -247,6 +250,10 @@ void loop() {
       else if(param == "frac1") frac1 = atof(value);
       else if(param == "frac2") frac2 = atof(value);
       else if(param == "frac3") frac3 = atof(value);
+      else if(param == "left_turn") next_move = "left_turn";
+      else if(param == "right_turn") next_move = "right_turn";
+      else if(param == "straight") next_move = "straight";
+      else if(param == "vel") vel = atof(value);
       //Serial.println("loop");
       
       
@@ -254,8 +261,10 @@ void loop() {
        
     inputString = "";
     stringSize = 0;
-    //param = ""; ATTENTION: modified by Kim
-    //value = {'0','0','0','0','0'};
+    param = "";
+    for(int i = 0; i < 10; i++){
+      value[i] = '0';
+    }
     stringComplete = false;
   }
   
@@ -275,35 +284,56 @@ void loop() {
   
   
 //******************Run animations based on command***********************************************************************  
-  if(param == "left_turn") {
+  char vel_col = 'G';
+  Serial.println(vel);
+  if(vel < 0.5) {vel_col = 'G';}
+  else if(vel < 1) {vel_col = 'O';}
+  else {vel_col = 'R';}
+
+  for(int i=start_pixel; i<strip.numPixels(); i=i+skip_step){
+    if(vel_col == 'R') {strip.setPixelColor(i,strip.Color(20,0,0));}
+    else if(vel_col == 'O') {strip.setPixelColor(i,strip.Color(15,5,0));}
+    else {strip.setPixelColor(i,strip.Color(0,15,0));}
+  }
+  strip.show();
+
+  int blink_half_period = 700;
+  
+  if(next_move == "left_turn") {
     for(int i=(strip.numPixels()+start_pixel)/2; i<strip.numPixels(); i=i+skip_step){
        strip.setPixelColor(i,strip.Color(0,20,50));
     }
     strip.show();
-    delay(1000);
+    delay(blink_half_period);
     for(int i=(strip.numPixels()+start_pixel)/2; i<strip.numPixels(); i=i+skip_step){
-       strip.setPixelColor(i,strip.Color(0,15,0));
+       if(vel_col == 'R') {strip.setPixelColor(i,strip.Color(20,0,0));}
+       else if(vel_col == 'O') {strip.setPixelColor(i,strip.Color(15,5,0));}
+       else {strip.setPixelColor(i,strip.Color(0,15,0));}
     }
     strip.show();
-    delay(1000);
+    delay(blink_half_period);
   }
 
-  else if(param == "right_turn") {
+  else if(next_move == "right_turn") {
     for(int i=start_pixel; i<(strip.numPixels()+start_pixel)/2; i=i+skip_step){
        strip.setPixelColor(i,strip.Color(0,20,50));
     }
     strip.show();
-    delay(1000);
+    delay(blink_half_period);
     for(int i=start_pixel; i<(strip.numPixels()+start_pixel)/2; i=i+skip_step){
-       strip.setPixelColor(i,strip.Color(0,15,0));
+       if(vel_col == 'R') {strip.setPixelColor(i,strip.Color(20,0,0));}
+       else if(vel_col == 'O') {strip.setPixelColor(i,strip.Color(15,5,0));}
+       else {strip.setPixelColor(i,strip.Color(0,15,0));}
     }
     strip.show();
-    delay(1000);    
+    delay(blink_half_period);    
   }
 
-  else if(param == "straight") {
+  else if(next_move == "straight") {
     for(int i=start_pixel; i<strip.numPixels(); i=i+skip_step){
-       strip.setPixelColor(i,strip.Color(0,15,0));
+       if(vel_col == 'R') {strip.setPixelColor(i,strip.Color(20,0,0));}
+       else if(vel_col == 'O') {strip.setPixelColor(i,strip.Color(15,5,0));}
+       else {strip.setPixelColor(i,strip.Color(0,15,0));}
     }
     strip.show();
   
