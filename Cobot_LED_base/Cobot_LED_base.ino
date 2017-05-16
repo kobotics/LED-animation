@@ -91,7 +91,7 @@ int total_time=10;
 void setup() {
   
   strip.begin();
-  Serial.begin(9600);
+  Serial.begin(4800);
   strip.show(); // Initialize all pixels to 'off'
   char command[7]={'0','0','0','0','0','0','0'};
   /*while(strcmp(command,"lights?")){
